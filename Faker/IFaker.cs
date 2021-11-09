@@ -8,6 +8,11 @@ namespace Faker
 {
     public interface IFaker
     {
-        object Create(Type type);
+        public T Create<T>()
+        {
+            return (T)(Create(typeof(T)));
+        }
+
+        public object Create(Type type);
     }
 }
