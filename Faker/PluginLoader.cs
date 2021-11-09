@@ -12,14 +12,12 @@ namespace Faker
    public class PluginLoader
     {
         private static readonly string PluginPath = Path.Combine("D:\\VS Projects\\SPP_2\\Faker", "plugins");
-        private Dictionary<Type, IGenerator> generators;
 
-        public PluginLoader(Dictionary<Type, IGenerator> generators)
+        public PluginLoader()
         {
-            this.generators = generators;
         }
 
-        public void LoadPluginGenerators()
+        public void LoadPluginGenerators(List<IGenerator> generators)
         {
             if (!Directory.Exists(PluginPath)) {
                 return;
@@ -28,11 +26,11 @@ namespace Faker
             foreach (var fileName in fileNames)
             {
                 Assembly assembly = Assembly.LoadFrom(fileName);
-                LoadPluginGenerator(assembly);
+                LoadPluginGenerator(assembly,generators);
             }
         }
 
-        private void LoadPluginGenerator(Assembly plugin)
+        private void LoadPluginGenerator(Assembly plugin, List<IGenerator> generators)
         {
             Type generatorType = plugin.GetTypes().FirstOrDefault(type => typeof(IGenerator).IsAssignableFrom(type));
             if (generatorType == null)
@@ -43,7 +41,7 @@ namespace Faker
                 return;
             if (plugin.CreateInstance(generatorType.FullName) is IGenerator generator)
             {
-                generators.Add(generator.GeneratorType(), generator);
+                generators.Add(generator);
             }
         }
     }
