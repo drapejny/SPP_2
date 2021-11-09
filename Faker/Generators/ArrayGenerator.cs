@@ -9,21 +9,14 @@ namespace Faker.Generators
     public class ArrayGenerator : IGenerator
     {
 
-        private IFaker faker;
-        private Type arrayType;
-
-        public ArrayGenerator(IFaker faker, Type arrayType)
+        public object Generate(Type type, IFaker faker)
         {
-            this.faker = faker;
-            this.arrayType = arrayType;
-        }
-
-        public object Generate()
-        {
-            var elementType = arrayType.GetElementType();
-            if (elementType == null)
-                return null;
-            int length = new Random().Next(0, 9);
+            if (!CanGenerate(type))
+            {
+                throw new ArgumentException("Bad type of the argument");
+            }
+            var elementType = type.GetElementType();
+            int length = new Random().Next(0, 10);
             var result = Array.CreateInstance(elementType, length);
             for (int i = 0; i < length; i++)
             {
@@ -33,9 +26,9 @@ namespace Faker.Generators
             return result;
         }
 
-        public Type GeneratorType()
+        public bool CanGenerate(Type type)
         {
-            return typeof(Array);
+            return type.IsArray;
         }
     }
 }

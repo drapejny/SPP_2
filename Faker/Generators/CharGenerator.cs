@@ -8,14 +8,18 @@ namespace Faker.Generators
 {
     public class CharGenerator : IGenerator
     {
-        public object Generate()
+        public bool CanGenerate(Type type)
         {
-            return (char)(new Random().Next(32, 126));
+            return type.Equals(typeof(char));
         }
 
-        public Type GeneratorType()
+        public object Generate(Type type, IFaker faker)
         {
-            return typeof(char);
-        }   
+            if (!CanGenerate(type))
+            {
+                throw new ArgumentException("Bad type of the argument");
+            }
+            return (char)(new Random().Next(32, 126));
+        } 
     }
 }

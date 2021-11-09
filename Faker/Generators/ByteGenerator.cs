@@ -8,14 +8,18 @@ namespace Faker.Generators
 {
     public class ByteGenerator : IGenerator
     {
-        public object Generate()
+        public bool CanGenerate(Type type)
         {
-            return (byte) (new Random().Next(byte.MinValue, byte.MaxValue));
+            return type.Equals(typeof(byte));
         }
 
-        public Type GeneratorType()
+        public object Generate(Type type, IFaker faker)
         {
-            return typeof(byte);
+            if (!CanGenerate(type))
+            {
+                throw new ArgumentException("Bad type of the argument");
+            }
+            return (byte)(new Random().Next(byte.MinValue, byte.MaxValue));
         }
     }
 }

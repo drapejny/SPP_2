@@ -8,20 +8,23 @@ namespace Faker.Generators
 {
     public class ULongGenerator : IGenerator
     {
-        public object Generate()
+        public bool CanGenerate(Type type)
         {
-            UIntGenerator uIntGenerator = new UIntGenerator();
-            uint first = (uint) uIntGenerator.Generate();
-            uint second = (uint)uIntGenerator.Generate();
-            ulong result = (ulong)first;
-            result <<= 32;
-            result = result | ((ulong)second);
-            return result;
+            return type.Equals(typeof(ulong));
         }
 
-        public Type GeneratorType()
+        public object Generate(Type type, IFaker faker)
         {
-            return typeof(ulong);
+            if (!CanGenerate(type))
+            {
+                throw new ArgumentException("Bad type of the argument");
+            }
+            uint first = faker.Create<uint>();
+            uint second = faker.Create<uint>();
+            ulong result = first;
+            result <<= 32;
+            result = result | (second);
+            return result;
         }
     }
 }

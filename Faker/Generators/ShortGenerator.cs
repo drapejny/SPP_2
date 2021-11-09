@@ -8,14 +8,18 @@ namespace Faker.Generators
 {
     public class ShortGenerator : IGenerator
     {
-        public object Generate()
+        public bool CanGenerate(Type type)
         {
-            return (short)(new Random().Next(short.MinValue, short.MaxValue));
+            return type.Equals(typeof(short));
         }
 
-        public Type GeneratorType()
+        public object Generate(Type type, IFaker faker)
         {
-            return typeof(short);
+            if (!CanGenerate(type))
+            {
+                throw new ArgumentException("Bad type of the argument");
+            }
+            return (short)(new Random().Next(short.MinValue, short.MaxValue));
         }
     }
 }

@@ -8,8 +8,8 @@ namespace Faker.Generators
 {
     public interface IGenerator
     {
-        public object Generate();
+        public object Generate(Type type, IFaker faker);
 
-        public Type GeneratorType();
+        public bool CanGenerate(Type type);
     }
 }

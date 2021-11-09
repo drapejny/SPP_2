@@ -8,14 +8,18 @@ namespace Faker.Generators
 {
     public class FloatGenerator : IGenerator
     {
-        public object Generate()
+        public bool CanGenerate(Type type)
         {
-            return (float)(new Random().NextDouble());
+            return type.Equals(typeof(float));
         }
 
-        public Type GeneratorType()
+        public object Generate(Type type, IFaker faker)
         {
-            return typeof(float);
+            if (!CanGenerate(type))
+            {
+                throw new ArgumentException("Bad type of the argument");
+            }
+            return (float)(new Random().NextDouble());
         }
     }
 }
