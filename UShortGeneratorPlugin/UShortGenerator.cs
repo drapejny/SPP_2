@@ -3,20 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Faker;
 using Faker.Generators;
 
 namespace UShortGeneratorPlugin
 {
     public class UShortGenerator : IGenerator
     {
-        public object Generate()
+        public bool CanGenerate(Type type)
         {
-            return (ushort)(new Random().Next(ushort.MinValue, ushort.MaxValue));
+            return type.Equals(typeof(ushort));
         }
 
-        public Type GeneratorType()
+        public object Generate(Type type, IFaker faker)
         {
-            return typeof(uint);
+            if (!CanGenerate(type))
+            {
+                throw new ArgumentException("Bad type of the argument");
+            }
+            return (ushort)(new Random().Next(ushort.MinValue, ushort.MaxValue));
         }
     }
 }

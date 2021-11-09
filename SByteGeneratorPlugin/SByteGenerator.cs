@@ -3,20 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Faker;
 using Faker.Generators;
 
 namespace SByteGeneratorPlugin
 {
     public class SByteGenerator : IGenerator
     {
-        public object Generate()
+        public bool CanGenerate(Type type)
         {
-            return (sbyte)(new Random().Next(sbyte.MinValue, sbyte.MaxValue));
+            return type.Equals(typeof(sbyte));
         }
 
-        public Type GeneratorType()
+        public object Generate(Type type, IFaker faker)
         {
-            return typeof(sbyte);
+            if (!CanGenerate(type))
+            {
+                throw new ArgumentException("Bad type of the argument");
+            }
+            return (sbyte)(new Random().Next(sbyte.MinValue, sbyte.MaxValue));
         }
     }
 }
