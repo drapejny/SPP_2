@@ -43,8 +43,23 @@ namespace TestProject
         {
             Faker.Faker faker = new Faker.Faker();
             F f = faker.Create<F>();
-            bool result = f.array.Length != 0 && f.matrix.Length != 0;
+            bool result = f.array.Length != 0 ;
             Assert.IsTrue(result);
+        }
+        [Test]
+        public void PropertiesTest()
+        {
+            Faker.Faker faker = new Faker.Faker();
+            G g = faker.Create<G>();
+            bool result = g.Age != default(int);
+            Assert.IsTrue(result);
+        }
+        [Test]
+        public void EnumTypeTest()
+        {
+            Faker.Faker faker = new Faker.Faker();
+            TestEnum testEnum = faker.Create<TestEnum>();
+            Assert.IsNotNull(testEnum);
         }
         private class A
         {
@@ -97,7 +112,17 @@ namespace TestProject
         private class F
         {
            public int[] array;
-           public int[][] matrix;
+        }
+
+        private class G
+        {
+            public int Age { get; set; }
+        }
+
+        private enum TestEnum
+        {
+            FIRST,
+            SECOND
         }
     }
 }
